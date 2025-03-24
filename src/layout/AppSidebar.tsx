@@ -46,6 +46,49 @@ const navItems: NavItem[] = [
     ],
   },
   {
+    name: "Award",
+    icon: <PageIcon />,
+    subItems: [
+      { name: "Award List", path: "/award-list", pro: false }
+
+    ],
+  },
+  {
+    name: "Department",
+    icon: <PageIcon />,
+    subItems: [
+      { name: "Department", path: "/department", pro: false },
+      { name: "Sub Department", path: "/sub-department", pro: false }
+
+    ],
+  },
+  {
+    name: "Employee",
+    icon: <PageIcon />,
+    subItems: [
+      { name: "Position", path: "/position", pro: false },
+      { name: "Employee", path: "/employee", pro: false },
+      { name: "Employee Performance", path: "/employee-performance", pro: false }
+    ],
+  },
+  {
+    name: "Holiday",
+    icon: <PageIcon />,
+    subItems: [
+      { name: "Weekly Holiday", path: "/weekly-holiday", pro: false },
+      { name: "Holiday", path: "/holiday", pro: false },
+      { name: "Leave Application", path: "/leave-application", pro: false }
+    ],
+  },
+  {
+    name: "Loan",
+    icon: <PageIcon />,
+    subItems: [
+      { name: "Loan List", path: "/loan-list", pro: false }
+
+    ],
+  },
+  {
     icon: <UserCircleIcon />,
     name: "User Profile",
     path: "/profile",

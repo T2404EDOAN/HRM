@@ -1,153 +1,254 @@
 import { useState } from "react";
+import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
+import Badge from "../ui/badge/Badge";
+import Label from "../form/Label";
+import Input from "../form/input/InputField";
+import Select from "../form/Select";
+import { TimeIcon } from "../../icons";
+import ComponentCard from "../common/ComponentCard";
 
 interface AttendanceRecord {
   id: number;
-  employee: string;
+  user: {
+    image: string;
+    name: string;
+    role: string;
+  };
   date: string;
-  timeIn: string;
-  timeOut: string;
-  status: 'Present' | 'Absent' | 'Late';
-  notes?: string;
+  checkIn: string;
+  checkOut: string;
+  status: string;
+  workHours: string;
 }
+
+const attendanceData: AttendanceRecord[] = [
+  {
+    id: 1,
+    user: {
+      image: "/images/user/user-17.jpg",
+      name: "Lindsey Curtis",
+      role: "Web Designer",
+    },
+    date: "2024-02-01",
+    checkIn: "08:30 AM",
+    checkOut: "05:30 PM",
+    workHours: "9h",
+    status: "Present",
+  },
+  {
+    id: 2,
+    user: {
+      image: "/images/user/user-18.jpg",
+      name: "Kaiya George",
+      role: "Project Manager",
+    },
+    date: "2024-02-01",
+    checkIn: "09:00 AM",
+    checkOut: "06:00 PM",
+    workHours: "9h",
+    status: "Late",
+  },
+];
 
 export default function AttendanceFormAdmin() {
   const [formData, setFormData] = useState({
-    employee: '',
-    date: '',
-    timeIn: '',
-    timeOut: '',
-    status: 'Present',
-    notes: ''
+    employee: "",
+    date: "",
+    timeIn: "",
+    timeOut: "",
+    status: "",
+    notes: "",
   });
 
-  const [records, setRecords] = useState<AttendanceRecord[]>([
-    {
-      id: 1,
-      employee: 'Nguyễn Văn A',
-      date: '2025-03-24',
-      timeIn: '08:30',
-      timeOut: '17:30',
-      status: 'Present'
-    },
-    {
-      id: 2,
-      employee: 'Trần B',
-      date: '2025-03-24',
-      timeIn: '09:00',
-      timeOut: '18:00',
-      status: 'Late',
-      notes: 'Kẹt xe'
-    }
-  ]);
+  const statusOptions = [
+    { value: "present", label: "Present" },
+    { value: "absent", label: "Absent" },
+    { value: "late", label: "Late" },
+  ];
+
+  const employeeOptions = [
+    { value: "1", label: "Lindsey Curtis" },
+    { value: "2", label: "Kaiya George" },
+  ];
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData({ ...formData, [field]: value });
+  };
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold mb-6">📌 Attendance Management</h2>
-      
-      {/* Form Section */}
-      <div className="bg-white p-6 rounded-lg shadow mb-6 space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+    <div className="space-y-6">
+      <ComponentCard title="Attendance Management">
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Employee Select */}
           <div>
-            <label className="block mb-2">
-              <span className="text-2xl mr-2">👤</span>Employee
-            </label>
-            <select className="w-full p-2 border rounded">
-              <option>Select Employee</option>
-              <option>Nguyễn Văn A</option>
-              <option>Trần B</option>
-            </select>
-          </div>
-          
-          <div>
-            <label className="block mb-2">
-              <span className="text-2xl mr-2">📅</span>Date
-            </label>
-            <input type="date" className="w-full p-2 border rounded" />
+            <Label>Employee</Label>
+            <Select
+              options={employeeOptions}
+              placeholder="Select employee"
+              onChange={(value) => handleInputChange("employee", value)}
+              className="dark:bg-dark-900"
+            />
           </div>
 
+          {/* Date Input */}
           <div>
-            <label className="block mb-2">
-              <span className="text-2xl mr-2">🕒</span>Time In
-            </label>
-            <input type="time" className="w-full p-2 border rounded" />
+            <Label htmlFor="date">Date</Label>
+            <Input 
+              type="date" 
+              id="date"
+              value={formData.date}
+              onChange={(e) => handleInputChange("date", e.target.value)}
+            />
           </div>
 
+          {/* Time In */}
           <div>
-            <label className="block mb-2">
-              <span className="text-2xl mr-2">🕒</span>Time Out
-            </label>
-            <input type="time" className="w-full p-2 border rounded" />
+            <Label htmlFor="timeIn">Time In</Label>
+            <div className="relative">
+              <Input
+                type="time"
+                id="timeIn"
+                value={formData.timeIn}
+                onChange={(e) => handleInputChange("timeIn", e.target.value)}
+              />
+              <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
+                <TimeIcon className="size-6" />
+              </span>
+            </div>
           </div>
 
+          {/* Time Out */}
           <div>
-            <label className="block mb-2">
-              <span className="text-2xl mr-2">📌</span>Status
-            </label>
-            <select className="w-full p-2 border rounded">
-              <option>Present</option>
-              <option>Absent</option>
-              <option>Late</option>
-            </select>
+            <Label htmlFor="timeOut">Time Out</Label>
+            <div className="relative">
+              <Input
+                type="time"
+                id="timeOut"
+                value={formData.timeOut}
+                onChange={(e) => handleInputChange("timeOut", e.target.value)}
+              />
+              <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
+                <TimeIcon className="size-6" />
+              </span>
+            </div>
           </div>
 
+          {/* Status Select */}
           <div>
-            <label className="block mb-2">
-              <span className="text-2xl mr-2">📝</span>Notes
-            </label>
-            <input type="text" className="w-full p-2 border rounded" placeholder="Enter reason if any" />
+            <Label>Status</Label>
+            <Select
+              options={statusOptions}
+              placeholder="Select status"
+              onChange={(value) => handleInputChange("status", value)}
+              className="dark:bg-dark-900"
+            />
+          </div>
+
+          {/* Notes */}
+          <div>
+            <Label htmlFor="notes">Notes</Label>
+            <Input
+              type="text"
+              id="notes"
+              placeholder="Enter reason if needed"
+              value={formData.notes}
+              onChange={(e) => handleInputChange("notes", e.target.value)}
+            />
           </div>
         </div>
 
-        <div className="flex gap-2 mt-4">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            💾 Save
+        {/* Action Buttons - Fix closing div */}
+        <div className="mt-6 flex items-center justify-end gap-4">
+          <button className="rounded-lg border border-red-500 px-4 py-2 text-red-500 transition hover:bg-red-500 hover:text-white">
+            Delete
           </button>
-          <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-            ❌ Delete
+          <button className="rounded-lg bg-brand-500 px-4 py-2 text-white transition hover:bg-brand-600">
+            Save
           </button>
         </div>
-      </div>
+      </ComponentCard>
 
-      {/* Table Section */}
-      <div className="overflow-x-auto">
-        <h3 className="text-lg font-semibold mb-4">📊 Attendance Records</h3>
-        <table className="w-full bg-white rounded-lg shadow">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="p-4 text-left">Employee</th>
-              <th className="p-4 text-left">Date</th>
-              <th className="p-4 text-left">Time In</th>
-              <th className="p-4 text-left">Time Out</th>
-              <th className="p-4 text-left">Status</th>
-              <th className="p-4 text-left">Notes</th>
-              <th className="p-4 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {records.map((record) => (
-              <tr key={record.id}>
-                <td className="p-4">{record.employee}</td>
-                <td className="p-4">{record.date}</td>
-                <td className="p-4">{record.timeIn}</td>
-                <td className="p-4">{record.timeOut}</td>
-                <td className="p-4">
-                  <span className={`px-2 py-1 rounded ${
-                    record.status === 'Present' ? 'bg-green-100 text-green-800' :
-                    record.status === 'Late' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {record.status}
-                  </span>
-                </td>
-                <td className="p-4">{record.notes}</td>
-                <td className="p-4">
-                  <button className="text-blue-500 hover:text-blue-700 mr-2">✏️ Edit</button>
-                  <button className="text-red-500 hover:text-red-700">❌ Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* Table Section - Fix TableRow structure */}
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+        <div className="max-w-full overflow-x-auto">
+          <Table>
+            <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+              <TableRow>
+                <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                  User
+                </TableCell>
+                <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                  Date
+                </TableCell>
+                <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                  Check In
+                </TableCell>
+                <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                  Check Out
+                </TableCell>
+                <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                  Work Hours
+                </TableCell>
+                <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                  Status
+                </TableCell>
+              </TableRow>
+            </TableHeader>
+
+            <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+              {attendanceData.map((record) => (
+                <TableRow key={record.id}>
+                  <TableCell className="px-5 py-4 sm:px-6 text-start">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 overflow-hidden rounded-full">
+                        <img
+                          width={40}
+                          height={40}
+                          src={record.user.image}
+                          alt={record.user.name}
+                        />
+                      </div>
+                      <div>
+                        <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                          {record.user.name}
+                        </span>
+                        <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
+                          {record.user.role}
+                        </span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {record.date}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {record.checkIn}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {record.checkOut}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {record.workHours}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    <Badge
+                      size="sm"
+                      color={
+                        record.status === "Present"
+                          ? "success"
+                          : record.status === "Late"
+                          ? "warning"
+                          : "error"
+                      }
+                    >
+                      {record.status}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );

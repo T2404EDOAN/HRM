@@ -10,7 +10,7 @@ interface AttendanceState {
   checkOutTime?: string;
 }
 
-export default function AttendanceFormOne() {
+export default function HolidayOne() {
   const [attendance, setAttendance] = useState<AttendanceState>({
     isCheckedIn: false
   });

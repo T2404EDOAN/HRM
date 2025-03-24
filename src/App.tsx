@@ -21,6 +21,16 @@ import Home from "./pages/Dashboard/Home";
 import AttendanceForm from "./pages/Attendance/AttendanceForm";
 import MissingAttendance from "./pages/Attendance/MissingAttendace";
 import MonthlyAttendance from "./pages/Attendance/MonthlyAttendance";
+import AwardList from "./pages/Award/AwardList";
+import Department from "./pages/Department/Department";
+import SubDepartment from "./pages/Department/SubDepartment";
+import Position from "./pages/Employee/Position";
+import Employee from "./pages/Employee/Emloyee";
+import EmployeePerformance from "./pages/Employee/EmployeePerformance";
+import WeeklyHodiday from "./pages/Leave/WeeklyHodiday";
+import Holiday from "./pages/Leave/Holiday";
+import LeaveApplication from "./pages/Leave/LeaveApplication";
+import LoanList from "./pages/Loan/LoanList";
 
 export default function App() {
   return (
@@ -44,6 +54,26 @@ export default function App() {
              <Route path="/attendance-form" element={<AttendanceForm />} />
              <Route path="/attendance-monthly" element={<MonthlyAttendance />} />
              <Route path="/attendance-missing" element={<MissingAttendance />} />
+
+              {/* Award */}
+            <Route path="/award-list" element={<AwardList />} />
+
+             {/* Department*/}
+             <Route path="/department" element={<Department />} />
+             <Route path="/sub-department" element={<SubDepartment />} />
+       
+              {/* Employee */}
+             <Route path="/position" element={<Position />} />
+             <Route path="/employee" element={<Employee />} />
+             <Route path="/employee-performance" element={<EmployeePerformance />} />
+
+              {/* Leave */}
+              <Route path="/weekly-holiday" element={<WeeklyHodiday />} />
+             <Route path="/holiday" element={<Holiday />} />
+             <Route path="/leave-application" element={<LeaveApplication />} />
+
+               {/* Loan */}
+            <Route path="/loan-list" element={<LoanList />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />
