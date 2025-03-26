@@ -15,6 +15,8 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Select from "../form/Select";
+import { BiPlusCircle } from "react-icons/bi";
+import Checkbox from "../form/input/Checkbox"; 
 
 interface SubDepartment {
   id: number;
@@ -36,13 +38,11 @@ const tableData: SubDepartment[] = [
     departmentName: "IT Department",
     status: "Active",
   },
-  // ...add more sample data as needed
 ];
 
 const statusOptions = [
   { value: "Active", label: "Active" },
-  { value: "Pending", label: "Pending" },
-  { value: "Cancel", label: "Cancel" },
+  { value: "Inactive", label: "Inactive" },
 ];
 
 const departmentOptions = [
@@ -51,24 +51,20 @@ const departmentOptions = [
   // ...add more departments
 ];
 
-// Form Props interfaces
-interface FormProps {
+interface SubDepartmentFormProps {
+  subDepartment?: SubDepartment;
   isOpen: boolean;
   onClose: () => void;
-}
-
-interface EditFormProps extends FormProps {
-  subDepartment: SubDepartment;
-  onSubmit: (data: SubDepartment) => void;
-}
-
-interface AddFormProps extends FormProps {
   onSubmit: (data: Omit<SubDepartment, 'id'>) => void;
+  mode: 'add' | 'edit';
 }
 
-// Form Components (similar structure to DepartmentOne)
-const EditSubDepartmentForm = ({ subDepartment, isOpen, onClose, onSubmit }: EditFormProps) => {
-  const [formData, setFormData] = useState(subDepartment);
+const SubDepartmentForm = ({ subDepartment, isOpen, onClose, onSubmit, mode }: SubDepartmentFormProps) => {
+  const [formData, setFormData] = useState({
+    name: subDepartment?.name || '',
+    departmentName: subDepartment?.departmentName || '',
+    status: subDepartment?.status || 'Active'  
+  });
 
   const handleInputChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
@@ -80,50 +76,87 @@ const EditSubDepartmentForm = ({ subDepartment, isOpen, onClose, onSubmit }: Edi
       onClose={() => onClose()}
       className="relative z-50"
     >
-      // ...existing Dialog structure...
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit(formData);
-        onClose();
-      }}>
-        <div className="space-y-6">
-          <div>
-            <Label>Sub Department Name</Label>
-            <Input
-              type="text"
-              value={formData.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
-            />
-          </div>
-          
-          <div>
-            <Label>Department</Label>
-            <Select
-              options={departmentOptions}
-              value={formData.departmentName}
-              onChange={(value) => handleInputChange("departmentName", value)}
-              className="dark:bg-dark-900"
-            />
-          </div>
-          
-          <div>
-            <Label>Status</Label>
-            <Select
-              options={statusOptions}
-              value={formData.status}
-              onChange={(value) => handleInputChange("status", value)}
-              className="dark:bg-dark-900"
-            />
+      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <Dialog.Panel className="mx-auto max-w-md w-full rounded-xl bg-white dark:bg-gray-800 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-white">
+              {mode === 'add' ? 'Add New Sub Department' : 'Edit Sub Department'}
+            </Dialog.Title>
+            <button
+              onClick={() => onClose()}
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+            >
+              <XMarkIcon className="size-6" />
+            </button>
           </div>
 
-          // ...existing action buttons...
-        </div>
-      </form>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(formData);
+            onClose();
+          }}>
+            <div className="space-y-6">
+              <div>
+                <Label>Sub Department Name</Label>
+                <Input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  placeholder="Enter sub department name"
+                />
+              </div>
+              
+              <div>
+                <Label>Department</Label>
+                <Select
+                  options={departmentOptions}
+                  value={formData.departmentName}
+                  onChange={(value) => handleInputChange("departmentName", value)}
+                  className="dark:bg-dark-900"
+                />
+              </div>
+
+              <div>
+                <Label>Status</Label>
+                <div className="space-y-2">
+                  {statusOptions.map(option => (
+                    <div key={option.value} className="flex items-center gap-2">
+                      <Checkbox
+                        checked={formData.status === option.value}
+                        onChange={() => handleInputChange("status", option.value)}
+                      />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {option.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={() => onClose()}
+                  className="rounded-lg border border-gray-300 px-4 py-2 text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600 flex items-center gap-2"
+                >
+                  {mode === 'add' && <BiPlusCircle className="text-lg" />}
+                  {mode === 'add' ? 'Add' : 'Save'}
+                </button>
+              </div>
+            </div>
+          </form>
+        </Dialog.Panel>
+      </div>
     </Dialog>
   );
 };
-
-// Add similar AddSubDepartmentForm component...
 
 export default function SubDepartmentOne() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -175,9 +208,10 @@ export default function SubDepartmentOne() {
         </div>
         <button 
           onClick={() => setIsAddModalOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center gap-2"
         >
-          + Add Sub Department
+          <BiPlusCircle className="text-lg" />
+          Add
         </button>
       </div>
 
@@ -223,7 +257,7 @@ export default function SubDepartmentOne() {
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
               {currentItems.map((subDept) => (
                 <TableRow key={subDept.id}>
-                  <TableCell className="px-5 py-4 text-start text-theme-sm">
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {subDept.id}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -235,13 +269,7 @@ export default function SubDepartmentOne() {
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     <Badge
                       size="sm"
-                      color={
-                        subDept.status === "Active"
-                          ? "success"
-                          : subDept.status === "Pending"
-                          ? "warning"
-                          : "error"
-                      }
+                      color={subDept.status === "Active" ? "success" : "error"}
                     >
                       {subDept.status}
                     </Badge>
@@ -302,7 +330,26 @@ export default function SubDepartmentOne() {
         </div>
       </div>
 
-      {/* ...existing modals... */}
+      {/* Unified Form Modal */}
+      <SubDepartmentForm
+        isOpen={isAddModalOpen || isEditModalOpen}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setIsEditModalOpen(false);
+          setEditingSubDepartment(null);
+        }}
+        onSubmit={(data) => {
+          if (editingSubDepartment) {
+            // Handle edit
+            console.log('Updated sub department:', { ...data, id: editingSubDepartment.id });
+          } else {
+            // Handle add
+            console.log('New sub department:', data);
+          }
+        }}
+        subDepartment={editingSubDepartment || undefined}
+        mode={editingSubDepartment ? 'edit' : 'add'}
+      />
     </div>
   );
 }

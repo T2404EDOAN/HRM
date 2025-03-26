@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
+import { BiPlusCircle } from "react-icons/bi";
 import {
   Table,
   TableBody,
@@ -14,8 +15,7 @@ import { Dialog } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
-import Select from "../form/Select";
-
+import Checkbox from "../form/input/Checkbox";  
 interface Department {
   id: number;
   name: string;
@@ -100,106 +100,23 @@ const tableData: Department[] = [
   }
 ];
 
-interface EditDepartmentFormProps {
-  department: Department;
+interface DepartmentFormProps {
+  department?: Department;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: Department) => void;
+  onSubmit: (data: Omit<Department, 'id'>) => void;
+  mode: 'add' | 'edit';
 }
 
 const statusOptions = [
   { value: "Active", label: "Active" },
-  { value: "Pending", label: "Pending" },
-  { value: "Cancel", label: "Cancel" },
+  { value: "Inactive", label: "Inactive" },
 ];
 
-const EditDepartmentForm = ({ department, isOpen, onClose, onSubmit }: EditDepartmentFormProps) => {
-  const [formData, setFormData] = useState(department);
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData({ ...formData, [field]: value });
-  };
-
-  return (
-    <Dialog
-      open={isOpen}
-      onClose={() => onClose()}
-      className="relative z-50"
-    >
-      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-md w-full rounded-xl bg-white dark:bg-gray-800 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-white">
-              Edit Department
-            </Dialog.Title>
-            <button
-              onClick={() => onClose()}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-            >
-              <XMarkIcon className="size-6" />
-            </button>
-          </div>
-
-          <form onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit(formData);
-            onClose();
-          }}>
-            <div className="space-y-6">
-              <div>
-                <Label>Department Name</Label>
-                <Input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <Label>Status</Label>
-                <Select
-                  options={statusOptions}
-                  value={formData.status}
-                  onChange={(value) => handleInputChange("status", value)}
-                  className="dark:bg-dark-900"
-                />
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-end gap-4">
-                <button
-                  type="button"
-                  onClick={() => onClose()}
-                  className="rounded-lg border border-gray-300 px-4 py-2 text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </div>
-          </form>
-        </Dialog.Panel>
-      </div>
-    </Dialog>
-  );
-};
-
-interface AddDepartmentFormProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (data: Omit<Department, 'id'>) => void;
-}
-
-const AddDepartmentForm = ({ isOpen, onClose, onSubmit }: AddDepartmentFormProps) => {
+const DepartmentForm = ({ department, isOpen, onClose, onSubmit, mode }: DepartmentFormProps) => {
   const [formData, setFormData] = useState({
-    name: '',
-    status: 'Active'
+    name: department?.name || '',
+    status: department?.status || 'Active'  // Mặc định là Active cho form thêm mới
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -217,7 +134,7 @@ const AddDepartmentForm = ({ isOpen, onClose, onSubmit }: AddDepartmentFormProps
         <Dialog.Panel className="mx-auto max-w-md w-full rounded-xl bg-white dark:bg-gray-800 p-6">
           <div className="flex items-center justify-between mb-4">
             <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-white">
-              Add New Department
+              {mode === 'add' ? 'Add New Department' : 'Edit Department'}
             </Dialog.Title>
             <button
               onClick={() => onClose()}
@@ -245,12 +162,20 @@ const AddDepartmentForm = ({ isOpen, onClose, onSubmit }: AddDepartmentFormProps
               
               <div>
                 <Label>Status</Label>
-                <Select
-                  options={statusOptions}
-                  value={formData.status}
-                  onChange={(value) => handleInputChange("status", value)}
-                  className="dark:bg-dark-900"
-                />
+                <div className="space-y-2">
+                  {statusOptions.map(option => (
+                    <Checkbox
+                      key={option.value}
+                      checked={formData.status === option.value}
+                      onChange={(checked) => {
+                        if (checked) {
+                          handleInputChange("status", option.value);
+                        }
+                      }}
+                      label={option.label}
+                    />
+                  ))}
+                </div>
               </div>
 
               <div className="flex items-center justify-end gap-4">
@@ -263,9 +188,10 @@ const AddDepartmentForm = ({ isOpen, onClose, onSubmit }: AddDepartmentFormProps
                 </button>
                 <button
                   type="submit"
-                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
+                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600 flex items-center gap-2"
                 >
-                  Add Department
+                  {mode === 'add' && <BiPlusCircle className="text-lg" />}
+                  {mode === 'add' ? 'Add' : 'Save'}
                 </button>
               </div>
             </div>
@@ -295,7 +221,7 @@ export default function DepartmentOne() {
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  // Reset to first page when searching
+ 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     setCurrentPage(1);
@@ -307,18 +233,14 @@ export default function DepartmentOne() {
   };
 
   const handleEditSubmit = (updatedDepartment: Department) => {
-    // Here you would typically update the data in your backend
-    // For now, we'll just update it in the frontend
+
     const updatedData = tableData.map((dept) =>
       dept.id === updatedDepartment.id ? updatedDepartment : dept
     );
-    // Update your data source here
     console.log('Updated department:', updatedDepartment);
   };
 
   const handleAddSubmit = (newDepartment: Omit<Department, 'id'>) => {
-    // Here you would typically send to backend
-    // For now, just log it
     console.log('New department:', newDepartment);
   };
 
@@ -340,9 +262,10 @@ export default function DepartmentOne() {
         </div>
         <button 
           onClick={() => setIsAddModalOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center gap-2"
         >
-          + Add Department
+          <BiPlusCircle className="text-lg" />
+          Add
         </button>
       </div>
 
@@ -382,7 +305,7 @@ export default function DepartmentOne() {
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
               {currentItems.map((department) => (
                 <TableRow key={department.id}>
-                  <TableCell className="px-5 py-4 text-start text-theme-sm">
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {department.id}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -391,13 +314,7 @@ export default function DepartmentOne() {
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     <Badge
                       size="sm"
-                      color={
-                        department.status === "Active"
-                          ? "success"
-                          : department.status === "Pending"
-                          ? "warning"
-                          : "error"
-                      }
+                      color={department.status === "Active" ? "success" : "error"}
                     >
                       {department.status}
                     </Badge>
@@ -458,25 +375,24 @@ export default function DepartmentOne() {
         </div>
       </div>
 
-      {/* Add Modal */}
-      <AddDepartmentForm
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSubmit={handleAddSubmit}
+      {/* Unified Form Modal */}
+      <DepartmentForm
+        isOpen={isAddModalOpen || isEditModalOpen}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setIsEditModalOpen(false);
+          setEditingDepartment(null);
+        }}
+        onSubmit={(data) => {
+          if (editingDepartment) {
+            handleEditSubmit({ ...data, id: editingDepartment.id });
+          } else {
+            handleAddSubmit(data);
+          }
+        }}
+        department={editingDepartment || undefined}
+        mode={editingDepartment ? 'edit' : 'add'}
       />
-
-      {/* Edit Modal */}
-      {editingDepartment && (
-        <EditDepartmentForm
-          department={editingDepartment}
-          isOpen={isEditModalOpen}
-          onClose={() => {
-            setIsEditModalOpen(false);
-            setEditingDepartment(null);
-          }}
-          onSubmit={handleEditSubmit}
-        />
-      )}
     </div>
   );
 }

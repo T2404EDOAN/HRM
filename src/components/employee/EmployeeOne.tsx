@@ -1,223 +1,152 @@
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHeader,
-    TableRow,
-  } from "../ui/table";
-  
-  import Badge from "../ui/badge/Badge";
-  
-  interface Order {
-    id: number;
-    user: {
-      image: string;
-      name: string;
-      role: string;
-    };
-    projectName: string;
-    team: {
-      images: string[];
-    };
-    status: string;
-    budget: string;
-  }
-  
-  // Define the table data using the interface
-  const tableData: Order[] = [
-    {
-      id: 1,
-      user: {
-        image: "/images/user/user-17.jpg",
-        name: "Lindsey Curtis",
-        role: "Web Designer",
-      },
-      projectName: "Agency Website",
-      team: {
-        images: [
-          "/images/user/user-22.jpg",
-          "/images/user/user-23.jpg",
-          "/images/user/user-24.jpg",
-        ],
-      },
-      budget: "3.9K",
-      status: "Active",
-    },
-    {
-      id: 2,
-      user: {
-        image: "/images/user/user-18.jpg",
-        name: "Kaiya George",
-        role: "Project Manager",
-      },
-      projectName: "Technology",
-      team: {
-        images: ["/images/user/user-25.jpg", "/images/user/user-26.jpg"],
-      },
-      budget: "24.9K",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      user: {
-        image: "/images/user/user-17.jpg",
-        name: "Zain Geidt",
-        role: "Content Writing",
-      },
-      projectName: "Blog Writing",
-      team: {
-        images: ["/images/user/user-27.jpg"],
-      },
-      budget: "12.7K",
-      status: "Active",
-    },
-    {
-      id: 4,
-      user: {
-        image: "/images/user/user-20.jpg",
-        name: "Abram Schleifer",
-        role: "Digital Marketer",
-      },
-      projectName: "Social Media",
-      team: {
-        images: [
-          "/images/user/user-28.jpg",
-          "/images/user/user-29.jpg",
-          "/images/user/user-30.jpg",
-        ],
-      },
-      budget: "2.8K",
-      status: "Cancel",
-    },
-    {
-      id: 5,
-      user: {
-        image: "/images/user/user-21.jpg",
-        name: "Carla George",
-        role: "Front-end Developer",
-      },
-      projectName: "Website",
-      team: {
-        images: [
-          "/images/user/user-31.jpg",
-          "/images/user/user-32.jpg",
-          "/images/user/user-33.jpg",
-        ],
-      },
-      budget: "4.5K",
-      status: "Active",
-    },
-  ];
-  
-  export default function EmployeeOne() {
-    return (
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
-        <div className="max-w-full overflow-x-auto">
-          <Table>
-            {/* Table Header */}
-            <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-              <TableRow>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  User
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "../ui/table";
+
+import Badge from "../ui/badge/Badge";
+
+interface Employee {
+  id: number;
+  employeeId: string;
+  name: string;
+  avatar: string;
+  email: string;
+  mobile: string;
+  dateOfBirth: string;
+  designation: string;
+  joiningDate: string;
+  status: string;
+}
+
+const tableData: Employee[] = [
+  {
+    id: 1,
+    employeeId: "EMP001",
+    name: "Lindsey Curtis",
+    avatar: "/images/user/user-17.jpg",
+    email: "lindsey@example.com",
+    mobile: "+1234567890",
+    dateOfBirth: "1990-05-15",
+    designation: "Web Designer",
+    joiningDate: "2022-01-15",
+    status: "Active",
+  },
+  {
+    id: 2,
+    employeeId: "EMP002",
+    name: "Kaiya George",
+    avatar: "/images/user/user-18.jpg",
+    email: "kaiya@example.com",
+    mobile: "+1234567891",
+    dateOfBirth: "1988-08-20",
+    designation: "Project Manager",
+    joiningDate: "2021-11-01",
+    status: "Active",
+  },
+  // ...existing code...
+];
+
+export default function EmployeeOne() {
+  return (
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+      <div className="max-w-full overflow-x-auto">
+        <Table>
+          <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+            <TableRow>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Sl
+              </TableCell>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Employee ID
+              </TableCell>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Name of Employee
+              </TableCell>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Email
+              </TableCell>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Mobile No
+              </TableCell>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Date of Birth
+              </TableCell>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Designation
+              </TableCell>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Joining Date
+              </TableCell>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Status
+              </TableCell>
+              <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                Action
+              </TableCell>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+            {tableData.map((employee) => (
+              <TableRow key={employee.id}>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {employee.id}
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Project Name
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {employee.employeeId}
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Team
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 overflow-hidden rounded-full">
+                      <img
+                        width={40}
+                        height={40}
+                        src={employee.avatar}
+                        alt={employee.name}
+                      />
+                    </div>
+                    <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                      {employee.name}
+                    </span>
+                  </div>
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Status
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {employee.email}
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Budget
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {employee.mobile}
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {employee.dateOfBirth}
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {employee.designation}
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {employee.joiningDate}
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  <Badge
+                    size="sm"
+                    color={employee.status === "Active" ? "success" : "error"}
+                  >
+                    {employee.status}
+                  </Badge>
+                </TableCell>
+                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  <div className="flex gap-2">
+                    <button className="text-blue-500 hover:text-blue-700">Edit</button>
+                    <button className="text-red-500 hover:text-red-700">Delete</button>
+                  </div>
                 </TableCell>
               </TableRow>
-            </TableHeader>
-  
-            {/* Table Body */}
-            <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {tableData.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell className="px-5 py-4 sm:px-6 text-start">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 overflow-hidden rounded-full">
-                        <img
-                          width={40}
-                          height={40}
-                          src={order.user.image}
-                          alt={order.user.name}
-                        />
-                      </div>
-                      <div>
-                        <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                          {order.user.name}
-                        </span>
-                        <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                          {order.user.role}
-                        </span>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.projectName}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    <div className="flex -space-x-2">
-                      {order.team.images.map((teamImage, index) => (
-                        <div
-                          key={index}
-                          className="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
-                        >
-                          <img
-                            width={24}
-                            height={24}
-                            src={teamImage}
-                            alt={`Team member ${index + 1}`}
-                            className="w-full size-6"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    <Badge
-                      size="sm"
-                      color={
-                        order.status === "Active"
-                          ? "success"
-                          : order.status === "Pending"
-                          ? "warning"
-                          : "error"
-                      }
-                    >
-                      {order.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                    {order.budget}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+            ))}
+          </TableBody>
+        </Table>
       </div>
-    );
-  }
-  
+    </div>
+  );
+}
