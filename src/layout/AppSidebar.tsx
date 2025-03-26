@@ -3,17 +3,29 @@ import { Link, useLocation } from "react-router";
 
 // Assume these icons are imported from an icon library
 import {
+  BankIcon,
   BoxCubeIcon,
   CalenderIcon,
+  ChatSquareIcon,
   ChevronDownIcon,
+  CreditIcon,
+  GraphIcon,
   GridIcon,
   HorizontaLDots,
+  ListCheckIcon,
   ListIcon,
+  NewspaperIcon,
   PageIcon,
+  PeopleIcon,
   PieChartIcon,
+  PlaneIcon,
   PlugInIcon,
+  StarIcon,
   TableIcon,
+  TrophyIcon,
   UserCircleIcon,
+  UserIcon,
+  UserSolidIcon
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
@@ -38,7 +50,7 @@ const navItems: NavItem[] = [
   },
   {
     name: "Attendance",
-    icon: <PageIcon />,
+    icon: <UserIcon />,
     subItems: [
       { name: "Attendance Form", path: "/attendance-form", pro: false },
       { name: "Monthly Attendance", path: "/attendance-monthly", pro: false },
@@ -47,7 +59,7 @@ const navItems: NavItem[] = [
   },
   {
     name: "Award",
-    icon: <PageIcon />,
+    icon: <TrophyIcon />,
     subItems: [
       { name: "Award List", path: "/award-list", pro: false }
 
@@ -55,7 +67,7 @@ const navItems: NavItem[] = [
   },
   {
     name: "Department",
-    icon: <PageIcon />,
+    icon: <BankIcon />,
     subItems: [
       { name: "Department", path: "/department", pro: false },
       { name: "Sub Department", path: "/sub-department", pro: false }
@@ -64,7 +76,7 @@ const navItems: NavItem[] = [
   },
   {
     name: "Employee",
-    icon: <PageIcon />,
+    icon: <PeopleIcon />,
     subItems: [
       { name: "Position", path: "/position", pro: false },
       { name: "Employee", path: "/employee", pro: false },
@@ -73,7 +85,7 @@ const navItems: NavItem[] = [
   },
   {
     name: "Holiday",
-    icon: <PageIcon />,
+    icon: <PlaneIcon />,
     subItems: [
       { name: "Weekly Holiday", path: "/weekly-holiday", pro: false },
       { name: "Holiday", path: "/holiday", pro: false },
@@ -82,9 +94,88 @@ const navItems: NavItem[] = [
   },
   {
     name: "Loan",
-    icon: <PageIcon />,
+    icon: <CreditIcon />,
     subItems: [
       { name: "Loan List", path: "/loan-list", pro: false }
+
+    ],
+  },
+  {
+    name: "Payroll",
+    icon: <CreditIcon />,
+    subItems: [
+      { name: "Salary Advance", path: "/salary-advance", pro: false },
+      { name: "Salary Generate", path: "/salary-generate", pro: false },
+      { name: "Mannage Employee Salary", path: "/manage-employee-salary", pro: false }
+    ],
+  },
+  {
+    name: "Procurement",
+    icon: <GraphIcon />,
+    subItems: [
+      { name: "Requests", path: "/request", pro: false },
+      { name: "Quetation", path: "/quotation", pro: false },
+      { name: "Bid Analysis", path: "/bid-analysis", pro: false },
+      { name: "Purchase Orders", path: "/purchase-oder", pro: false },
+      { name: "Goods Received", path: "/gooods-received", pro: false },
+      { name: "Vendors", path: "/vendors", pro: false },
+      { name: "Committees", path: "/committees", pro: false },
+      { name: "Units", path: "/units", pro: false }
+    ],
+  },
+  {
+    name: "Project management ",
+    icon: <ListCheckIcon />,
+    subItems: [
+      { name: "Clients", path: "/clients", pro: false },
+      { name: "Projects", path: "/projects", pro: false },
+      { name: "Manage tasks", path: "/manage-tasks", pro: false },
+      { name: "Reports", path: "/reports", pro: false },
+      { name: "Team members", path: "/team-members", pro: false }
+   
+    ],
+  },
+  {
+    name: "Recruitment ",
+    icon: <NewspaperIcon />,
+    subItems: [
+      { name: "Candidates", path: "/candidates", pro: false },
+      { name: "Candidate shortlist", path: "/candidate-shortlists", pro: false },
+      { name: "Interview", path: "/interviews", pro: false },
+      { name: "Candidate selection", path: "/candidate_selection", pro: false }
+   
+    ],
+  },
+  {
+    name: "Reports",
+    icon: <GraphIcon />,
+    subItems: [
+      { name: "Attendance report", path: "/attendance-reports", pro: false },
+      { name: "Leave report", path: "/leave-reports", pro: false },
+      { name: "Employee reports:", path: "/employee-reports", pro: false },
+      { name: "Payroll", path: "/payroll-reports", pro: false },
+      { name: "Adhoc report", path: "/adhoc-reports", pro: false }
+   
+    ],
+  },
+  {
+    name: "Reward points",
+    icon: <StarIcon />,
+    subItems: [
+      { name: "Point settings", path: "/point-settings", pro: false },
+      { name: "Point categories", path: "/point-categories", pro: false },
+      { name: "Management points", path: "/management-points", pro: false },
+      { name: "Collaborative points", path: "/collaborative-points", pro: false },
+      { name: "Attendance points", path: "/attendance-points", pro: false },
+      { name: "Employee points", path: "/employee-points", pro: false }
+   
+    ],
+  },
+  {
+    name: "Setup rules",
+    icon: <ChatSquareIcon />,
+    subItems: [
+      { name: "Rules", path: "/rules", pro: false }
 
     ],
   },

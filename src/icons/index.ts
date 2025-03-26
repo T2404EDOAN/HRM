@@ -52,7 +52,17 @@ import { ReactComponent as ChatIcon } from "./chat.svg?react";
 import { ReactComponent as MoreDotIcon } from "./moredot.svg?react";
 import { ReactComponent as AlertHexaIcon } from "./alert-hexa.svg?react";
 import { ReactComponent as ErrorHexaIcon } from "./info-hexa.svg?react";
-
+import { ReactComponent as UserSolidIcon } from "./user-solid.svg?react";
+import { ReactComponent as TrophyIcon } from "./trophy.svg?react";
+import { ReactComponent as BankIcon } from "./bank.svg?react";
+import { ReactComponent as PeopleIcon } from "./people.svg?react";
+import { ReactComponent as PlaneIcon } from "./airplane.svg?react";
+import { ReactComponent as CreditIcon } from "./credit-card.svg?react";
+import { ReactComponent as GraphIcon } from "./graph-up.svg?react";
+import { ReactComponent as ListCheckIcon } from "./list-check.svg?react";
+import { ReactComponent as NewspaperIcon } from "./newspaper.svg?react";
+import { ReactComponent as StarIcon } from "./star.svg?react";
+import { ReactComponent as ChatSquareIcon } from "./chat-square.svg?react";
 export {
   ErrorHexaIcon,
   AlertHexaIcon,
@@ -108,4 +118,15 @@ export {
   HorizontaLDots,
   ChevronUpIcon,
   ChatIcon,
+  UserSolidIcon,
+  TrophyIcon,
+  BankIcon,
+  PeopleIcon,
+PlaneIcon,
+CreditIcon,
+GraphIcon,
+ListCheckIcon,
+NewspaperIcon,
+StarIcon,
+ChatSquareIcon
 };
