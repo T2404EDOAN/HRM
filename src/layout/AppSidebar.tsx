@@ -89,14 +89,17 @@ const navItems: NavItem[] = [
     subItems: [
       { name: "Weekly Holiday", path: "/weekly-holiday", pro: false },
       { name: "Holiday", path: "/holiday", pro: false },
-      { name: "Leave Application", path: "/leave-application", pro: false }
+      { name: "Leave Application", path: "/leave-application", pro: false },
+      { name: "Leave Approval", path: "/leave-approval", pro: false },
     ],
   },
   {
-    name: "Loan",
+    name: "Salary & Advance",
     icon: <CreditIcon />,
     subItems: [
-      { name: "Loan List", path: "/loan-list", pro: false }
+      { name: "Request Salary Advance", path: "/request-salary-advance", pro: false },
+      { name: "Approve Salary Advance", path: "/approve-salary-advance", pro: false },
+      { name: "Employee Salary Management",path: "/employee-salary-management", pro: false}
 
     ],
   },
@@ -451,7 +454,7 @@ const AppSidebar: React.FC = () => {
             <>
               <img
                 className="dark:hidden"
-                src="/images/logo/logo.svg"
+                src="/images/logo/Logo.png"
                 alt="Logo"
                 width={150}
                 height={40}

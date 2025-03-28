@@ -1,10 +1,9 @@
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
 import PageMeta from "../../components/common/PageMeta";
+import ApproveSalaryAdvanceOne from "../../components/salaryadvance/ApproveSalaryAdvanceOne";
 
-import LoanListOne from "../../components/salaryadvance/RequestSalaryAdvanceOne";
-
-export default function Rules() {
+export default function ApproveSalaryAdvance() {
   return (
     <>
       <PageMeta
@@ -14,7 +13,7 @@ export default function Rules() {
       <PageBreadcrumb pageTitle="Award" />
       <div className="space-y-6">
         <ComponentCard title="Award List">
-          <LoanListOne />
+          <ApproveSalaryAdvanceOne/>
         </ComponentCard>
       </div>
     </>

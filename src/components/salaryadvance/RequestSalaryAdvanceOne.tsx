@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { BiPlusCircle } from "react-icons/bi";
 import {
   Table,
   TableBody,
@@ -15,57 +14,58 @@ import { Dialog } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
-import Checkbox from "../form/input/Checkbox";
-import Flatpickr from "react-flatpickr";
-import { CalenderIcon } from "../../icons";
+import { BiPlusCircle } from "react-icons/bi";
 
-interface Award {
+interface SalaryAdvanceRequest {
   id: number;
-  awardName: string;
-  description: string;
-  giftItem: string;
-  date: string;
-  employeeName: string;
-  awardBy: string;
+  amount: number;
+  reason: string;
+  notes?: string;
+  requestDate: string;
+  status: string;
 }
 
-const tableData: Award[] = [
+const tableData: SalaryAdvanceRequest[] = [
   {
     id: 1,
-    awardName: "Employee of the Month",
-    description: "Outstanding performance in Q1",
-    giftItem: "Gift Voucher",
-    date: "2024-02-15",
-    employeeName: "John Doe",
-    awardBy: "HR Manager"
+    amount: 5000000,
+    requestDate: "2024-02-20",
+    reason: "Medical expenses",
+    status: "Chờ duyệt",
   },
-  // Add more sample data as needed
+  {
+    id: 2,
+    amount: 3000000,
+    requestDate: "2024-02-19",
+    reason: "Personal expenses",
+    status: "Đã duyệt",
+  },
 ];
 
-interface DepartmentFormProps {
-  department?: Award;
+const statusOptions = [
+  { value: "Đã duyệt", label: "Đã duyệt" },
+  { value: "Chờ duyệt", label: "Chờ duyệt" },
+  { value: "Từ chối", label: "Từ chối" },
+];
+
+interface SalaryAdvanceFormProps {
+  request?: SalaryAdvanceRequest;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: Omit<Award, 'id'>) => void;
+  onSubmit: (data: Omit<SalaryAdvanceRequest, 'id'>) => void;
   mode: 'add' | 'edit';
 }
 
-const statusOptions = [
-  { value: "Active", label: "Active" },
-  { value: "Inactive", label: "Inactive" },
-];
-
-const DepartmentForm = ({ department, isOpen, onClose, onSubmit, mode }: DepartmentFormProps) => {
+const SalaryAdvanceForm = ({ request, isOpen, onClose, onSubmit, mode }: SalaryAdvanceFormProps) => {
   const [formData, setFormData] = useState({
-    awardName: department?.awardName || '',
-    description: department?.description || '',
-    giftItem: department?.giftItem || '',
-    date: department?.date || '',
-    employeeName: department?.employeeName || '',
-    awardBy: department?.awardBy || ''
+    amount: request?.amount || 0,
+    reason: request?.reason || '',
+    notes: request?.notes || '',
+    requestDate: new Date().toISOString().split('T')[0],
+    status: 'Chờ duyệt'
   });
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | number) => {
     setFormData({ ...formData, [field]: value });
   };
 
@@ -80,7 +80,7 @@ const DepartmentForm = ({ department, isOpen, onClose, onSubmit, mode }: Departm
         <Dialog.Panel className="mx-auto max-w-md w-full rounded-xl bg-white dark:bg-gray-800 p-6">
           <div className="flex items-center justify-between mb-4">
             <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-white">
-              {mode === 'add' ? 'Add New Award' : 'Edit Award'}
+              Salary Advance Request
             </Dialog.Title>
             <button
               onClick={() => onClose()}
@@ -97,66 +97,34 @@ const DepartmentForm = ({ department, isOpen, onClose, onSubmit, mode }: Departm
           }}>
             <div className="space-y-6">
               <div>
-                <Label>Award Name</Label>
+                <Label>Advance Amount *</Label>
                 <Input
-                  type="text"
-                  value={formData.awardName}
-                  onChange={(e) => handleInputChange("awardName", e.target.value)}
-                  placeholder="Enter award name"
+                  type="number"
+                  value={formData.amount}
+                  onChange={(e) => handleInputChange("amount", Number(e.target.value))}
+                  placeholder="Enter advance amount"
+                  required
                 />
               </div>
+              
               <div>
-                <Label>Description</Label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => handleInputChange("description", e.target.value)}
-                  placeholder="Enter award description"
-                  rows={4}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700 dark:text-white"
-                />
-              </div>
-              <div>
-                <Label>Gift Item</Label>
+                <Label>Reason *</Label>
                 <Input
                   type="text"
-                  value={formData.giftItem}
-                  onChange={(e) => handleInputChange("giftItem", e.target.value)}
-                  placeholder="Enter gift item"
+                  value={formData.reason}
+                  onChange={(e) => handleInputChange("reason", e.target.value)}
+                  placeholder="Enter reason"
+                  required
                 />
               </div>
+
               <div>
-                <Label>Date</Label>
-                <div className="relative">
-                  <Flatpickr
-                    value={formData.date}
-                    onChange={([date]) => handleInputChange("date", date.toISOString().split('T')[0])}
-                    options={{
-                      dateFormat: "Y-m-d",
-                      placeholder: "Select date"
-                    }}
-                    className="h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 bg-transparent text-gray-800 border-gray-300 focus:border-brand-300 focus:ring-brand-500/20 dark:border-gray-700 dark:focus:border-brand-800"
-                  />
-                  <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
-                    <CalenderIcon className="size-6" />
-                  </span>
-                </div>
-              </div>
-              <div>
-                <Label>Employee Name</Label>
+                <Label>Notes (optional)</Label>
                 <Input
                   type="text"
-                  value={formData.employeeName}
-                  onChange={(e) => handleInputChange("employeeName", e.target.value)}
-                  placeholder="Enter employee name"
-                />
-              </div>
-              <div>
-                <Label>Award By</Label>
-                <Input
-                  type="text"
-                  value={formData.awardBy}
-                  onChange={(e) => handleInputChange("awardBy", e.target.value)}
-                  placeholder="Enter award by"
+                  value={formData.notes}
+                  onChange={(e) => handleInputChange("notes", e.target.value)}
+                  placeholder="Enter notes"
                 />
               </div>
 
@@ -170,10 +138,9 @@ const DepartmentForm = ({ department, isOpen, onClose, onSubmit, mode }: Departm
                 </button>
                 <button
                   type="submit"
-                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600 flex items-center gap-2"
+                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
                 >
-                  {mode === 'add' && <BiPlusCircle className="text-lg" />}
-                  {mode === 'add' ? 'Add' : 'Save'}
+                  Submit Request
                 </button>
               </div>
             </div>
@@ -184,17 +151,17 @@ const DepartmentForm = ({ department, isOpen, onClose, onSubmit, mode }: Departm
   );
 };
 
-export default function AwardListOne() {
+export default function RequestSalaryAdvanceOne() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingDepartment, setEditingDepartment] = useState<Award | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingRequest, setEditingRequest] = useState<SalaryAdvanceRequest | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 5;
-  
-  // Filter data based on search term
-  const filteredData = tableData.filter(award => 
-    award.awardName.toLowerCase().includes(searchTerm.toLowerCase())
+
+  // Pagination and filtering logic
+  const filteredData = tableData.filter(request => 
+    request.reason.toLowerCase().includes(searchTerm.toLowerCase())
   );
   
   // Calculate pagination with filtered data
@@ -203,27 +170,16 @@ export default function AwardListOne() {
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
- 
+  // Add handleSearch function
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     setCurrentPage(1);
   };
 
-  const handleEdit = (award: Award) => {
-    setEditingDepartment(award);
+  // Add handleEdit function
+  const handleEdit = (request: SalaryAdvanceRequest) => {
+    setEditingRequest(request);
     setIsEditModalOpen(true);
-  };
-
-  const handleEditSubmit = (updatedAward: Award) => {
-
-    const updatedData = tableData.map((awrd) =>
-      awrd.id === updatedAward.id ? updatedAward : awrd
-    );
-    console.log('Updated award:', updatedAward);
-  };
-
-  const handleAddSubmit = (newAward: Omit<Award, 'id'>) => {
-    console.log('New award:', newAward);
   };
 
   return (
@@ -235,7 +191,7 @@ export default function AwardListOne() {
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <Input
               type="text"
-              placeholder="Search awards..."
+              placeholder="Search by reason..."
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
               className="pl-10"
@@ -261,82 +217,75 @@ export default function AwardListOne() {
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Sl.
+                  No.
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Award name
+                  Advance Amount
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Award description
+                  Request Date
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Gift item
+                  Reason
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Date
+                  Status
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Employee name
-                </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Award by
-                </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Action
+                  Actions
                 </TableCell>
               </TableRow>
             </TableHeader>
 
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {currentItems.map((award) => (
-                <TableRow key={award.id}>
+              {currentItems.map((request) => (
+                <TableRow key={request.id}>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {award.id}
+                    {request.id}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {award.awardName}
+                    {request.amount.toLocaleString('vi-VN')} VNĐ
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {award.description}
+                    {new Date(request.requestDate).toLocaleDateString('vi-VN')}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {award.giftItem}
+                    {request.reason}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {award.date}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {award.employeeName}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {award.awardBy}
+                    <Badge
+                      size="sm"
+                      color={
+                        request.status === "Đã duyệt" 
+                          ? "success" 
+                          : request.status === "Chờ duyệt"
+                          ? "warning"
+                          : "error"
+                      }
+                    >
+                      {request.status}
+                    </Badge>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     <div className="flex gap-3">
                       <button 
                         className="p-1 text-blue-500 hover:text-blue-700 rounded-full hover:bg-blue-50"
-                        onClick={() => handleEdit(award)}
+                        onClick={() => handleEdit(request)}
                       >
                         <FiEdit size={18} />
                       </button>
@@ -389,22 +338,22 @@ export default function AwardListOne() {
       </div>
 
       {/* Unified Form Modal */}
-      <DepartmentForm
+      <SalaryAdvanceForm
         isOpen={isAddModalOpen || isEditModalOpen}
         onClose={() => {
           setIsAddModalOpen(false);
           setIsEditModalOpen(false);
-          setEditingDepartment(null);
+          setEditingRequest(null);
         }}
         onSubmit={(data) => {
-          if (editingDepartment) {
-            handleEditSubmit({ ...data, id: editingDepartment.id });
+          if (editingRequest) {
+            console.log('Updated request:', { ...data, id: editingRequest.id });
           } else {
-            handleAddSubmit(data);
+            console.log('New request:', data);
           }
         }}
-        department={editingDepartment || undefined}
-        mode={editingDepartment ? 'edit' : 'add'}
+        request={editingRequest || undefined}
+        mode={editingRequest ? 'edit' : 'add'}
       />
     </div>
   );

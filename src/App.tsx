@@ -30,7 +30,7 @@ import EmployeePerformance from "./pages/Employee/EmployeePerformance";
 import WeeklyHodiday from "./pages/Leave/WeeklyHodiday";
 import Holiday from "./pages/Leave/Holiday";
 import LeaveApplication from "./pages/Leave/LeaveApplication";
-import LoanList from "./pages/Loan/LoanList";
+import LoanList from "./pages/Loan/RequestSalaryAdvance";
 import SalaryAdvance from "./pages/Payroll/SalaryAdvance";
 import SalaryGenerate from "./pages/Payroll/SalaryGenerate";
 import ManageEmployeeSalary from "./pages/Payroll/ManageEmployeeSalary";
@@ -63,6 +63,11 @@ import CollaborativePoints from "./pages/Rewardpoints/CollaborativePoints";
 import AttendancePoints from "./pages/Rewardpoints/AttendancePoints";
 import EmployeePoints from "./pages/Rewardpoints/EmployeePoints";
 import Rules from "./pages/SetupsRules/Rules";
+import LeaveApprovalOne from "./components/leave/LeaveApprovalOne";
+import LeaveApproval from "./pages/Leave/LeaveApproval";
+import RequestSalaryAdvance from "./pages/Loan/RequestSalaryAdvance";
+import ApproveSalaryAdvance from "./pages/Loan/ApproveSalaryAdvance";
+import EmployeeSalaryManagement from "./pages/Loan/EmployeeSalaryManagement";
 
 export default function App() {
   return (
@@ -103,9 +108,12 @@ export default function App() {
               <Route path="/weekly-holiday" element={<WeeklyHodiday />} />
              <Route path="/holiday" element={<Holiday />} />
              <Route path="/leave-application" element={<LeaveApplication />} />
+             <Route path="/leave-approval" element={<LeaveApproval />} />
 
                {/* Loan */}
-            <Route path="/loan-list" element={<LoanList />} />
+            <Route path="/request-salary-advance" element={<RequestSalaryAdvance />} />
+            <Route path="/approve-salary-advance" element={<ApproveSalaryAdvance />} />
+            <Route path="/employee-salary-management" element={<EmployeeSalaryManagement />} />
 
              {/* Payroll */}
              <Route path="/salary-advance" element={<SalaryAdvance />} />
